@@ -2,8 +2,8 @@
   "name": "agent-compat-docs",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "content": "fumadocs-mdx",
     "typecheck": "tsc --noEmit"
@@ -18,9 +18,12 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "26.2.0",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
     "typescript": "latest"
   }
 }

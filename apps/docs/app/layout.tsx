@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { RootProvider } from "fumadocs-ui/provider/next";
-import "fumadocs-ui/css/neutral.css";
-import "fumadocs-ui/css/preset.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://agents-compat.jstn.site"),
@@ -21,7 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="flex min-h-screen flex-col">
+        <a
+          href="#nd-page"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fd-popover focus:px-3 focus:py-2 focus:text-fd-popover-foreground"
+        >
+          Skip to content
+        </a>
         <RootProvider>{children}</RootProvider>
         <Analytics />
       </body>
