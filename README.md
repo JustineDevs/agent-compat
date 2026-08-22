@@ -1,21 +1,21 @@
 <div align="center">
-  <img src="./public/img/assets/banner.png" alt="agent-compat" width="800"/>
+  <img src="./public/img/assets/banner.png" alt="agents" width="800"/>
   
 > Cross-agent environment compatibility SDK — detect, compile, validate
   
-[![npm version](https://img.shields.io/npm/v/@jstn-sdk/agent-compat)](https://www.npmjs.com/package/@jstn-sdk/agent-compat)
+[![npm version](https://img.shields.io/npm/v/@jstn-sdk/agents)](https://www.npmjs.com/package/@jstn-sdk/agents)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
 
 > [!NOTE]
-> **agent-compat** is a pure SDK (library), not a CLI. It provides programmatic APIs for detecting agent environments, compiling manifests to native files, and validating generated output. Embed it in your own tools, CI pipelines, or use the companion CLI for a ready-to-use command-line experience.
+> **agents** is a pure SDK (library), not a CLI. It provides programmatic APIs for detecting agent environments, compiling manifests to native files, and validating generated output. Embed it in your own tools, CI pipelines, or use the companion CLI for a ready-to-use command-line experience.
 
 ---
 
 ## Difference
 
-| Feature | [rulesync](https://github.com/dyoshikawa/rulesync) | agent-compat |
+| Feature | [rulesync](https://github.com/dyoshikawa/rulesync) | agents |
 |---|---|---|
 | **Form factor** | CLI tool | Pure SDK (library) |
 | **Detection** | Manual `--targets` flag | Automatic environment detection |
@@ -39,11 +39,11 @@
 ## Installation & Setup
 
 ```bash
-npm install @jstn-sdk/agent-compat
+npm install @jstn-sdk/agents
 ```
 
 ```typescript
-import { Agents } from "@jstn-sdk/agent-compat";
+import { Agents } from "@jstn-sdk/agents";
 ```
 
 ---
@@ -75,7 +75,7 @@ const result = await Agents.compile(manifest, {
   targets: ["cursor", "codex", "pi"],
   output: "./my-project"
 });
-// → { files: [".cursor/rules/agent-compat.mdc", "AGENTS.md", ".pi/agents.md"] }
+// → { files: [".cursor/rules/agents.mdc", "AGENTS.md", ".pi/agents.md"] }
 ```
 
 ### 3. Validate
@@ -92,7 +92,7 @@ const report = await Agents.validate("./my-project");
 ## Architecture
 
 ```
-agent-compat/
+agents/
 ├── detect()     ← Environment detection
 ├── compile()    ← Manifest → native files
 ├── validate()   ← Spec compliance check
@@ -123,7 +123,7 @@ agent-compat/
 Register custom adapters:
 
 ```typescript
-import { Agents, Adapter } from "@jstn-sdk/agent-compat";
+import { Agents, Adapter } from "@jstn-sdk/agents";
 
 const myAdapter: Adapter = {
   id: "my-tool",
@@ -141,13 +141,13 @@ Agents.register(myAdapter);
 
 ### [Meta-Architect](https://github.com/JustineDevs/meta-architect)
 
-Meta-Architect uses `agent-compat` as its core compatibility layer. When users run `npx @jstn-sdk/ma@latest init`, Meta-Architect calls `Agents.detect()` to discover installed environments, then `Agents.compile()` to generate native files for Cursor, Codex, Pi, OpenClaw, and other detected tools.
+Meta-Architect uses `agents` as its core compatibility layer. When users run `npx @jstn-sdk/ma@latest init`, Meta-Architect calls `Agents.detect()` to discover installed environments, then `Agents.compile()` to generate native files for Cursor, Codex, Pi, OpenClaw, and other detected tools.
 
-This allows Meta-Architect to focus on development workflow opinions (skills, gates, traceability) while delegating cross-agent compatibility to `agent-compat`.
+This allows Meta-Architect to focus on development workflow opinions (skills, gates, traceability) while delegating cross-agent compatibility to `agents`.
 
 ### Custom CI Pipeline
 
-A team embeds `agent-compat` in their CI to validate that generated agent configurations match official specs before merging:
+A team embeds `agents` in their CI to validate that generated agent configurations match official specs before merging:
 
 ```typescript
 const report = await Agents.validate("./");
@@ -158,7 +158,7 @@ if (report.hasErrors()) {
 
 ### VS Code Extension
 
-An extension uses `agent-compat` to show real-time compatibility status as developers edit their `agents.yaml` manifest, highlighting which environments will receive full vs. partial support.
+An extension uses `agents` to show real-time compatibility status as developers edit their `agents.yaml` manifest, highlighting which environments will receive full vs. partial support.
 
 ---
 
@@ -208,8 +208,8 @@ pnpm test
 
 ## Links
 
-- [Documentation](https://agent-compat.jstn.site)
-- [npm](https://www.npmjs.com/package/@jstn-sdk/agent-compat)
+- [Documentation](https://agents.jstn.site)
+- [npm](https://www.npmjs.com/package/@jstn-sdk/agents)
 - [Issues](https://github.com/JustineDevs/agent-compat/issues)
 - [Changelog](./CHANGELOG.md)
 
