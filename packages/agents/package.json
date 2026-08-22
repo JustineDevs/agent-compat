@@ -38,8 +38,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "pnpm build && node --test",
-    "verify": "pnpm build && node --test test/conformance.test.js"
+    "test": "pnpm build && tsc -p tsconfig.test.json && node --test dist-test/test/*.test.js",
+    "verify": "pnpm build && tsc -p tsconfig.test.json && node --test dist-test/test/conformance.test.js"
   },
   "engines": {
     "node": ">=18"

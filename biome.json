@@ -6,6 +6,8 @@
       "!**/.omx",
       "!**/node_modules",
       "!**/dist",
+      "!**/dist-test",
+      "!**/.dist",
       "!**/coverage",
       "!**/.next",
       "!**/.source",

@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { Agents } from "../dist/index.js";
-import { verifyAdapter } from "../dist/testing/index.js";
+import { Agents } from "../src/index.js";
+import { verifyAdapter } from "../src/testing/index.js";
 
 test("every registered adapter passes compile/write/read/validate conformance", async (t) => {
   const manifest = {

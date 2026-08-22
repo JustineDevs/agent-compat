@@ -5,6 +5,8 @@ apps/docs/tsconfig.tsbuildinfo
 apps/docs/AGENTS.md
 apps/docs/CLAUDE.md
 dist/
+.dist/
+packages/agents/dist-test/
 coverage/
 .pnpm-store/
 .turbo/

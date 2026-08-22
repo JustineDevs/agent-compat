@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawn } from "node:child_process";
 
-const packageRoot = new URL("../packages/agents/", import.meta.url);
+const packageRoot = new URL("../../packages/agents/", import.meta.url);
 const packageJson = JSON.parse(
   await readFile(new URL("package.json", packageRoot), "utf8"),
 );
@@ -33,7 +33,7 @@ try {
     )}\n`,
   );
 
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     const child = spawn(
       "npm",
       [
@@ -43,11 +43,7 @@ try {
         "--registry",
         "https://npm.pkg.github.com",
       ],
-      {
-        cwd: stage,
-        stdio: "inherit",
-        env: process.env,
-      },
+      { cwd: stage, stdio: "inherit", env: process.env },
     );
     child.on("error", reject);
     child.on("exit", (code) =>
