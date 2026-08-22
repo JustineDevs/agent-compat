@@ -6,6 +6,8 @@
 [![npm version](https://img.shields.io/npm/v/@jstn-sdk/agents)](https://www.npmjs.com/package/@jstn-sdk/agents)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<a href="https://www.producthunt.com/products/agent-compat?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-agent-compat" target="_blank" rel="noopener noreferrer"><img alt="agent-compat - The compatibility layer for AI agent environments. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1229506&amp;theme=light&amp;t=1787430161859"></a>
+
 </div>
 
 > [!NOTE]
