@@ -8,12 +8,13 @@ import {
   readTextIfExists,
   resolveWithinRoot,
 } from "./shared.js";
+import type { ValidationOptions } from "./types.js";
 
 function parseFrontmatter(content) {
   if (!content?.startsWith("---\n")) return null;
   const end = content.indexOf("\n---\n", 4);
   if (end < 0) return null;
-  const values = {};
+  const values: Record<string, unknown> = {};
   for (const line of content.slice(4, end).split("\n")) {
     const separator = line.indexOf(":");
     if (separator <= 0) return null;
@@ -29,7 +30,7 @@ function parseFrontmatter(content) {
   return values;
 }
 
-function checkOutput(content, output) {
+function checkOutput(content: string | null, output: any) {
   if (content == null)
     return { status: "invalid", score: 0, issue: `Missing ${output.path}` };
   if (!isManagedDocument(content))
@@ -83,7 +84,7 @@ function checkOutput(content, output) {
   return { status: "valid", score: 100 };
 }
 
-export async function validate(root = ".", options = {}) {
+export async function validate(root = ".", options: ValidationOptions = {}) {
   const absoluteRoot = path.resolve(root);
   const report = {};
   const results = {};
@@ -95,7 +96,7 @@ export async function validate(root = ".", options = {}) {
   const adapters = getTargetAdapters(requestedTargets);
 
   for (const adapter of adapters) {
-    const checks = [];
+    const checks: any[] = [];
     for (const output of adapter.outputs) {
       try {
         checks.push(

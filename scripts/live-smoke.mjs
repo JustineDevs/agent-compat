@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { Agents } from "../packages/agents/src/index.js";
+import { Agents } from "../packages/agents/dist/index.js";
 
 const run = promisify(execFile);
 const manifest = {

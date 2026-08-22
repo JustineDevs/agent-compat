@@ -15,11 +15,11 @@ async function signalExists(root, signal) {
 
 export async function detect(root = ".") {
   const absoluteRoot = normalizeRoot(root);
-  const results = [];
+  const results: any[] = [];
 
   for (const adapter of listAdapters()) {
     if (adapter.id === "generic") continue;
-    const signals = [];
+    const signals: any[] = [];
     for (const signal of adapter.signals ?? []) {
       if (await signalExists(absoluteRoot, signal)) signals.push(signal);
     }

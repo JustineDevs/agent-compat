@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import { constants as fsConstants } from "node:fs";
 import path from "node:path";
+import type { Adapter, Manifest, Skill } from "./types.js";
 
 const MANAGED_BEGIN = "<!-- agents:begin -->";
 const MANAGED_END = "<!-- agents:end -->";
@@ -30,7 +31,7 @@ export async function assertSafeWritePath(root, relativePath) {
       throw new Error(`Refusing symlink path: ${root}`);
     }
   } catch (error) {
-    if (error?.code !== "ENOENT") throw error;
+    if ((error as NodeJS.ErrnoException)?.code !== "ENOENT") throw error;
   }
   const relative = path.relative(absoluteRoot, absolutePath);
   for (const segment of relative ? relative.split(path.sep) : []) {
@@ -40,7 +41,7 @@ export async function assertSafeWritePath(root, relativePath) {
         throw new Error(`Refusing symlink path: ${relativePath}`);
       }
     } catch (error) {
-      if (error?.code === "ENOENT") break;
+      if ((error as NodeJS.ErrnoException)?.code === "ENOENT") break;
       throw error;
     }
   }
@@ -166,7 +167,9 @@ export function renderManifestDocument(
   }
 
   if (manifest.skills && typeof manifest.skills === "object") {
-    const skillEntries = Object.entries(manifest.skills);
+    const skillEntries = Object.entries(manifest.skills) as Array<
+      [string, Skill]
+    >;
     if (skillEntries.length > 0) {
       lines.push("", "## Skills");
       for (const [name, skill] of skillEntries) {
@@ -194,7 +197,9 @@ export function renderManifestDocument(
   }
 
   if (manifest.workflows && typeof manifest.workflows === "object") {
-    const workflowEntries = Object.entries(manifest.workflows);
+    const workflowEntries = Object.entries(manifest.workflows) as Array<
+      [string, Record<string, any>]
+    >;
     if (workflowEntries.length > 0) {
       lines.push("", "## Workflows");
       for (const [name, workflow] of workflowEntries) {
@@ -216,7 +221,9 @@ export function renderManifestDocument(
   }
 
   if (manifest.roles && typeof manifest.roles === "object") {
-    const roleEntries = Object.entries(manifest.roles);
+    const roleEntries = Object.entries(manifest.roles) as Array<
+      [string, Record<string, any>]
+    >;
     if (roleEntries.length > 0) {
       lines.push("", "## Roles");
       for (const [name, role] of roleEntries) {
@@ -304,7 +311,7 @@ export function renderSkillDocument(skillName, skill, target) {
 }
 
 export function normalizeManifest(manifest) {
-  const isRecord = (value) =>
+  const isRecord = (value: unknown): value is Record<string, any> =>
     value !== null && typeof value === "object" && !Array.isArray(value);
   const strings = (value, label) => {
     if (value === undefined) return [];

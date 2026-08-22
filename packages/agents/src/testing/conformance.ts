@@ -8,7 +8,9 @@ export async function verifyAdapter(adapter, { root, manifest }) {
   });
   const report = await validate(root, { targets: [adapter.id] });
   const validation = report.results[adapter.id];
-  const missing = compiled.files.filter((file) => file.status !== "created");
+  const missing = (compiled.files as any[]).filter(
+    (file) => file.status !== "created",
+  );
 
   return {
     adapter: adapter.id,
