@@ -63,6 +63,15 @@ On Ubuntu CI, `fzf` is installed with `sudo apt-get install --yes fzf`. On macOS
 npm install @jstn-sdk/agents
 ```
 
+Publish the public SDK package from the workspace root with:
+
+```bash
+pnpm publish:agents
+```
+
+The private `agent-compat` workspace root is not publishable; only
+`packages/agents` publishes as `@jstn-sdk/agents`.
+
 ```typescript
 import { Agents } from "@jstn-sdk/agents";
 ```
