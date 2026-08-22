@@ -1,0 +1,41 @@
+---
+title: Validation and drift
+description: Read validation reports and keep generated artifacts correct.
+---
+
+`validate()` checks the files that actually exist under a project root. It does
+not report what a compiler intended to write.
+
+```ts
+const report = await Agents.validate("./my-project", {
+  targets: ["cursor", "codex-cli"],
+});
+
+for (const [id, result] of Object.entries(report.results)) {
+  console.log(id, result.status, result.score, result.issues);
+}
+
+if (!report.valid) process.exitCode = 1;
+```
+
+## Statuses
+
+| Status | Meaning |
+| --- | --- |
+| `valid` | All declared outputs pass their adapter checks. |
+| `partial` | Output exists but has a managed-block or contract warning. |
+| `invalid` | An output is missing, malformed, unsafe, or over its limit. |
+| `unknown` | Validation could not complete. |
+
+The report includes `targets`, `results`, and a `summary` with counts for each
+status. Each target result includes a score, issues, and capability values.
+
+## Drift workflow
+
+1. Keep the canonical manifest under version control.
+2. Run `compile()` after changing the manifest.
+3. Run `validate()` in CI against the checked-out project.
+4. Fail the job when `report.valid` is false.
+
+Validation is filesystem conformance. It does not prove that a proprietary
+desktop, cloud, or hosted agent is installed or executing a prompt.

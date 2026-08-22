@@ -1,0 +1,57 @@
+---
+title: Manifest reference
+description: Define the canonical project contract consumed by the SDK.
+---
+
+The manifest is a JavaScript or TypeScript object. The SDK does not parse YAML;
+load YAML in your application and pass the resulting object to `compile()`.
+
+```ts
+import type { Manifest } from "@jstn-sdk/agents";
+
+const manifest: Manifest = {
+  version: 1,
+  project: {
+    name: "my-app",
+    description: "A TypeScript service",
+    stack: ["typescript", "node"],
+  },
+  instructions: [
+    "Read docs/architecture before cross-module changes",
+    "Run type checks and tests before completion",
+  ],
+  skills: {
+    architecture-review: {
+      description: "Review architecture boundaries",
+      triggers: ["architecture", "refactor"],
+      instructions: ["Check dependency direction"],
+      tools: ["git"],
+    },
+  },
+  workflows: {
+    implementation: {
+      steps: ["inspect", "plan", "implement", "validate"],
+    },
+  },
+};
+```
+
+## Fields
+
+| Field | Required | Purpose |
+| --- | --- | --- |
+| `version` | yes | Manifest schema version. Current value is `1`. |
+| `project` | no | Project name, description, and stack metadata. |
+| `instructions` | no | Portable project instructions. |
+| `skills` | no | Named reusable skills and their instructions. |
+| `workflows` | no | Workflow metadata preserved in generated documents. |
+| `roles` | no | Role metadata preserved in generated documents. |
+| `targets` | no | Application-level target metadata. Explicit compile options take precedence. |
+
+Empty optional collections are normalized safely. Skill names must be safe
+directory names because adapters may write them below a target skill root.
+
+## One source of truth
+
+Keep the manifest in your repository and treat generated files as artifacts.
+Changing a generated file directly will be overwritten on the next compile.

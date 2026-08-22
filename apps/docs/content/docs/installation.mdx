@@ -1,0 +1,57 @@
+---
+title: Installation
+description: Install the standalone SDK in Node.js and TypeScript projects.
+---
+
+## Requirements
+
+- Node.js 18 or newer
+- npm, pnpm, yarn, or bun
+
+## npm
+
+```bash
+npm install @jstn-sdk/agents
+```
+
+The package is a library and does not install a CLI or start an agent runtime.
+
+## pnpm
+
+```bash
+pnpm add @jstn-sdk/agents
+```
+
+## GitHub Packages mirror
+
+The owner-scoped GitHub Packages alias is available for authenticated GitHub
+package consumers. npm remains the canonical package and name:
+
+```bash
+npm login --registry=https://npm.pkg.github.com
+npm install @JustineDevs/agents --registry=https://npm.pkg.github.com
+```
+
+## Module formats
+
+The package exports both ESM and CommonJS entry points and includes TypeScript
+declarations:
+
+```ts
+import { Agents } from "@jstn-sdk/agents";
+```
+
+```js
+const { Agents } = require("@jstn-sdk/agents");
+```
+
+## Verify the installation
+
+```ts
+import { Agents } from "@jstn-sdk/agents";
+
+console.log(Agents.list().length);
+```
+
+The returned count is the number of built-in adapter surfaces registered by
+that package version.

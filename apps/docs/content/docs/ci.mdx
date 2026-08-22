@@ -1,0 +1,44 @@
+---
+title: CI and release checks
+description: Add deterministic SDK and documentation checks to automation.
+---
+
+The repository's production checks are intentionally deterministic:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm check
+pnpm lint
+```
+
+The SDK package checks can be run independently:
+
+```bash
+pnpm --filter @jstn-sdk/agents build
+pnpm --filter @jstn-sdk/agents typecheck
+pnpm --filter @jstn-sdk/agents test
+pnpm --filter @jstn-sdk/agents verify
+```
+
+## Validate a project in CI
+
+```ts
+import { Agents } from "@jstn-sdk/agents";
+
+const report = await Agents.validate(process.cwd());
+if (!report.valid) {
+  console.error(JSON.stringify(report, null, 2));
+  process.exit(1);
+}
+```
+
+## What the checks prove
+
+- `typecheck` proves the public declarations remain internally consistent.
+- `test` covers API behavior and safety regressions.
+- `verify` runs compile/write/read/validate conformance in temporary projects.
+- `matrix:check` prevents the support matrix from drifting from the registry.
+- `docs:build` proves the official documentation site can be deployed.
+
+Filesystem conformance is separate from live vendor runtime verification. See
+the [support matrix](/docs/support-matrix) for the current evidence boundary.

@@ -1,5 +1,16 @@
 {
   "title": "Agent Compat",
   "description": "Cross-agent environment compatibility SDK",
-  "root": true
+  "root": true,
+  "pages": [
+    "index",
+    "quickstart",
+    "installation",
+    "manifest",
+    "api",
+    "validation",
+    "adapters",
+    "ci",
+    "support-matrix"
+  ]
 }

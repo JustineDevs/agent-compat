@@ -22,6 +22,10 @@ const manifest: Manifest = {
 };
 ```
 
+Install the package first with `npm install @jstn-sdk/agents`. The SDK accepts
+objects; if your source is YAML, parse it in your application before calling
+the API.
+
 ## 2. Detect environments
 
 ```ts
@@ -44,3 +48,14 @@ const report = await Agents.validate('./my-project');
 ```
 
 Use `dryRun: true` to preview writes. Managed blocks are updated without replacing unrelated user content.
+
+## 4. Make validation a gate
+
+```ts
+if (!report.valid) {
+  console.error(report.summary);
+  process.exitCode = 1;
+}
+```
+
+For the complete field reference, see [Manifest reference](/docs/manifest).
