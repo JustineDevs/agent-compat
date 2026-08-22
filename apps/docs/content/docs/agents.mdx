@@ -1,0 +1,130 @@
+---
+title: Agent registry
+description: The 55-target registry planned for the next SDK release.
+---
+
+The next registry release defines **55 agent targets**, representing **54
+vendors** and **53 vendor families**. `universal` is a fallback target, not a
+vendor. `trae` and `trae-cn` share one vendor skill directory.
+
+This page is the next-release catalog. The currently published package remains
+covered by the [current support matrix](/docs/support-matrix) until these target
+IDs are included in the runtime registry and pass conformance checks.
+
+## Registry layers
+
+| Layer | Count | Contract |
+| --- | ---: | --- |
+| Universal targets | 15 | Read `.agents/skills` directly. |
+| Non-universal targets | 40 | Receive skill fanout into the target directory. |
+| Total target entries | 55 | Includes the `universal` fallback. |
+| Distinct vendors | 54 | Excludes the `universal` pseudo-target. |
+| Vendor families | 53 | `trae` and `trae-cn` share a directory. |
+
+## Universal targets
+
+These targets consume the canonical `.agents/skills` directory directly:
+
+```text
+codex
+opencode
+cursor
+amp
+cline
+gemini-cli
+github-copilot
+antigravity
+deepagents
+dexto
+firebender
+kimi-cli
+warp
+replit
+universal
+```
+
+## Non-universal targets
+
+These targets require symlink or copy fanout into their native skill directory:
+
+```text
+claude-code
+windsurf
+goose
+augment
+aider-desk
+continue
+roo
+kiro-cli
+junie
+devin
+openhands
+cortex
+crush
+forgecode
+bob
+codebuddy
+codemaker
+codestudio
+command-code
+codearts-agent
+droid
+hermes-agent
+iflow-cli
+kilo
+kode
+mcpjam
+mistral-vibe
+mux
+neovate
+openclaw
+pi
+pochi
+adal
+qoder
+qwen-code
+rovodev
+tabnine-cli
+trae
+trae-cn
+zencoder
+```
+
+## MCP boundary
+
+Only four targets receive native MCP configuration injection through the
+Universal Plugin Broker:
+
+```text
+claude-code
+antigravity
+cursor
+codex
+```
+
+All other targets receive the `.agents/skills` context payload layer. This
+distinction is intentional: skill fanout is portable, while MCP configuration
+is host-specific and must not be claimed where the native contract is absent.
+
+## Support guarantee
+
+Each next-release target must provide:
+
+- Detection with a stable target ID.
+- Canonical manifest compilation.
+- Portable `.agents/skills` output or native skill fanout.
+- A capability report that identifies MCP support.
+- Filesystem conformance validation.
+- Explicit unsupported-feature warnings.
+
+The registry count is not a claim that every target has identical native
+features. Native MCP support is limited to the four targets above; all other
+targets use the portable context payload until their native contract is
+verified.
+
+## Release gate
+
+The next registry becomes a shipped support claim only when the target IDs are
+present in the runtime registry, the support matrix is regenerated, and the
+conformance suite passes for all 55 entries. Until then, use the current
+published [41-adapter matrix](/docs/support-matrix) for release evidence.
