@@ -1,6 +1,7 @@
 {
   "name": "agent-compat",
   "private": true,
+  "type": "module",
   "description": "Workspace for the @jstn-sdk/agents compatibility SDK",
   "packageManager": "pnpm@9.15.4",
   "engines": {
@@ -12,9 +13,10 @@
     "test": "pnpm --filter @jstn-sdk/agents test",
     "verify": "pnpm --filter @jstn-sdk/agents verify",
     "publish:agents": "pnpm --filter @jstn-sdk/agents publish --access public",
-    "publish:github": "node scripts/publish-github-package.mjs",
-    "live-smoke": "node scripts/live-smoke.mjs",
-    "matrix:check": "node scripts/check-support-matrix.mjs",
+    "scripts:build": "tsc -p scripts/tsconfig.json",
+    "publish:github": "pnpm scripts:build && node .dist/scripts/publish-github-package.js",
+    "live-smoke": "pnpm scripts:build && node .dist/scripts/live-smoke.js",
+    "matrix:check": "pnpm scripts:build && node .dist/scripts/check-support-matrix.js",
     "check": "pnpm format:check && pnpm build && pnpm typecheck && pnpm test && pnpm matrix:check && pnpm docs:content && pnpm knip",
     "format": "biome format --write .",
     "format:check": "biome format .",

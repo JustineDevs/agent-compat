@@ -1,4 +1,5 @@
 {
+  "entry": ["scripts/*.ts"],
   "ignoreDependencies": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/github",

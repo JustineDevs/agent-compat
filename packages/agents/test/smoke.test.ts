@@ -3,7 +3,9 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { Agents } from "../dist/index.js";
+import { Agents } from "../src/index.js";
+
+const invalid = (value: unknown) => value as never;
 
 test("detect, compile, validate", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "agents-"));
@@ -63,7 +65,7 @@ test("detect, compile, validate", async () => {
   assert.match(rendered, /## Roles/);
 
   const report = await Agents.validate(root);
-  assert.equal(report.cursor, "✓");
+  assert.equal((report as Record<string, any>).cursor, "✓");
   assert.equal(report.valid, true);
 });
 
@@ -182,7 +184,6 @@ test("compiles native artifacts for all targets and preserves unmanaged files", 
       },
     },
     {
-      root,
       output: root,
       targets: [
         "cursor",
@@ -293,40 +294,40 @@ test("dry-run and validation expose real artifact state", async () => {
     "<!-- agents:begin -->\n---\ndescription: broken\n---\n<!-- agents:end -->\n",
   );
   const report = await Agents.validate(root);
-  assert.equal(report.cursor, "×");
-  assert.equal(report.cursorValidation.status, "invalid");
-  assert.equal(report.results.cursor.status, "invalid");
+  const legacyReport = report as Record<string, any>;
+  assert.equal(legacyReport.cursor, "×");
+  assert.equal(legacyReport.cursorValidation.status, "invalid");
+  assert.equal(legacyReport.results.cursor.status, "invalid");
   await fs.rm(root, { recursive: true, force: true });
 });
 
 test("rejects malformed manifests and unknown targets", async () => {
   await assert.rejects(
-    () => Agents.compile({ version: 2 }, { targets: ["cursor"] }),
+    () => Agents.compile(invalid({ version: 2 }), { targets: ["cursor"] }),
     /manifest.version/,
   );
   await assert.rejects(
     () =>
       Agents.compile(
-        {
+        invalid({
           version: 1,
           workflows: { implementation: { steps: "not-an-array" } },
-        },
+        }),
         { targets: ["cursor"] },
       ),
     /workflow implementation\.steps/,
   );
   await assert.rejects(
     () =>
-      Agents.compile(
-        { version: 1, targets: { auto: "yes" } },
-        { targets: ["cursor"] },
-      ),
+      Agents.compile(invalid({ version: 1, targets: { auto: "yes" } }), {
+        targets: ["cursor"],
+      }),
     /manifest\.targets\.auto/,
   );
   await assert.rejects(
     () =>
       Agents.compile(
-        { version: 1, roles: { reviewer: { permissions: "read" } } },
+        invalid({ version: 1, roles: { reviewer: { permissions: "read" } } }),
         { targets: ["cursor"] },
       ),
     /role reviewer\.permissions/,
@@ -336,17 +337,22 @@ test("rejects malformed manifests and unknown targets", async () => {
     ["workflows", []],
     ["roles", []],
     ["targets", []],
-  ]) {
+  ] as const) {
     await assert.rejects(
       () =>
-        Agents.compile({ version: 1, [field]: value }, { targets: ["cursor"] }),
+        Agents.compile(invalid({ version: 1, [field]: value }), {
+          targets: ["cursor"],
+        }),
       new RegExp(`manifest\\.${field} must be an object`),
     );
   }
   await assert.rejects(
     () =>
       Agents.compile(
-        { version: 1, skills: { review: { instructions: ["ok", 1] } } },
+        invalid({
+          version: 1,
+          skills: { review: { instructions: ["ok", 1] } },
+        }),
         { targets: ["cursor"] },
       ),
     /skill review\.instructions must be an array of strings/,
@@ -410,7 +416,7 @@ test("scopes validation and reports shared output collisions", async () => {
   const report = await Agents.validate(root, { targets: ["cursor"] });
   assert.deepEqual(report.targets, ["cursor"]);
   assert.equal(report.valid, true);
-  assert.equal(report.results.codex, undefined);
+  assert.equal((report as Record<string, any>).results.codex, undefined);
 
   const collision = await Agents.compile(
     { version: 1, project: { name: "collision" }, instructions: [] },

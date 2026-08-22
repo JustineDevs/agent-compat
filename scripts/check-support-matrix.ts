@@ -1,5 +1,10 @@
 import { readFile } from "node:fs/promises";
-import { Agents } from "../packages/agents/dist/index.js";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+
+const { Agents } = (await import(
+  pathToFileURL(join(process.cwd(), "packages/agents/dist/index.js")).href
+)) as typeof import("../packages/agents/dist/index.js");
 
 const matrix = await readFile("docs/support-matrix.md", "utf8");
 const adapters = Agents.list();
