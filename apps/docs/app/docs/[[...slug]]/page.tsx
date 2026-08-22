@@ -35,5 +35,23 @@ export async function generateMetadata(props: PageProps) {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) return {};
-  return { title: page.data.title, description: page.data.description };
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    alternates: { canonical: page.url },
+    openGraph: {
+      type: "article",
+      url: page.url,
+      title: page.data.title,
+      description: page.data.description,
+      images: [
+        {
+          url: "/assets/banner.png",
+          width: 2508,
+          height: 627,
+          alt: `${page.data.title} | Agent Compat`,
+        },
+      ],
+    },
+  };
 }

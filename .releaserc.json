@@ -16,6 +16,7 @@
     [
       "@semantic-release/github",
       {
+        "labels": [],
         "assets": [{ "path": "release/*.tgz", "label": "npm package" }],
         "releaseBodyTemplate": "<%= nextRelease.notes %>\n\nPackage: [@jstn-sdk/agents](https://www.npmjs.com/package/@jstn-sdk/agents)\n\nRepository: https://github.com/JustineDevs/agent-compat"
       }

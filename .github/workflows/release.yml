@@ -10,7 +10,7 @@ on:
       - ".releaserc.json"
       - "package.json"
       - "pnpm-lock.yaml"
-      - "scripts/publish-github-package.mjs"
+      - "scripts/publish-github-package.ts"
 
 permissions:
   contents: write
@@ -35,7 +35,23 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
-      - run: pnpm release
+      - name: Check npm publishing credentials
+        id: npm-auth
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [[ -n "$NPM_TOKEN" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::NPM_TOKEN is not configured; semantic-release will be skipped."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run semantic-release
+        if: steps.npm-auth.outputs.available == 'true'
+        run: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Skip semantic-release without npm credentials
+        if: steps.npm-auth.outputs.available != 'true'
+        run: echo "Release skipped because NPM_TOKEN is not configured."
