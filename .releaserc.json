@@ -1,13 +1,24 @@
 {
   "branches": ["main"],
+  "tagFormat": "v${version}",
   "repositoryUrl": "https://github.com/JustineDevs/agent-compat.git",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     [
       "@semantic-release/npm",
-      { "pkgRoot": "packages/agents", "npmPublish": true }
+      {
+        "pkgRoot": "packages/agents",
+        "npmPublish": true,
+        "tarballDir": "release"
+      }
     ],
-    "@semantic-release/github"
+    [
+      "@semantic-release/github",
+      {
+        "assets": [{ "path": "release/*.tgz", "label": "npm package" }],
+        "releaseBodyTemplate": "<%= nextRelease.notes %>\n\nPackage: [@jstn-sdk/agents](https://www.npmjs.com/package/@jstn-sdk/agents)\n\nRepository: https://github.com/JustineDevs/agent-compat"
+      }
+    ]
   ]
 }

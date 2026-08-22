@@ -14,6 +14,9 @@ This is the release-gate record for `@jstn-sdk/agents`.
 | Live runtime E2E verification | 0/41 | Optional host-specific evidence; not the SDK contract gate |
 | Runtime startup smoke | 12/41 passed | Installed runtimes plus temporary npm/Python installs for Gemini CLI, Pi, OpenCode, `llm`, Fabric, Amp, Kilo Code, and gptme |
 | Public package metadata | Complete | Scoped package public access is configured |
+| Semantic npm release | Configured | Semantic-release publishes npm, tags `v${version}`, and generates GitHub release notes |
+| GitHub Release package asset | Configured | The exact npm tarball is attached to each GitHub Release |
+| GitHub Packages registry | Blocked by namespace | `@jstn-sdk/agents` requires a GitHub `jstn-sdk` user or organization namespace; no public `jstn-sdk` organization is available |
 | Meta-Architect integration | Contract-ready | Integrate after pinning the published package version |
 
 ## Adapter Matrix
@@ -77,5 +80,11 @@ Publish `0.1.0` as a production SDK contract when:
 4. Native support claims have documentation URLs and native artifact validation.
 5. Runtime smoke is additive evidence, reported when a host is available.
 6. Meta-Architect consumes the published version through its package contract.
+
+GitHub Releases are synchronized by semantic-release. The GitHub Packages page
+is a separate registry: it cannot receive `@jstn-sdk/agents` unless the
+`jstn-sdk` scope belongs to a GitHub account or organization. The npm package
+and exact tarball remain linked from each GitHub Release until that namespace
+exists or the package is intentionally renamed to `@justinedevs/agents`.
 
 Current status: **SDK contract production-ready; runtime evidence is additive and partial by host availability**.
