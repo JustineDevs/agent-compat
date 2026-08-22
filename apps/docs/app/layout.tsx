@@ -30,12 +30,21 @@ export const metadata: Metadata = {
     description:
       "Detect, compile, and validate project integrations across AI coding environments.",
     url: "/docs",
+    images: [
+      {
+        url: "/assets/banner.png",
+        width: 2508,
+        height: 627,
+        alt: "Agent Compat cross-agent environment compatibility SDK",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Agent Compat | Cross-agent compatibility SDK",
     description:
       "Detect, compile, and validate project integrations across AI coding environments.",
+    images: ["/assets/banner.png"],
   },
   robots: {
     index: true,
@@ -70,6 +79,7 @@ export default function RootLayout({
                   operatingSystem: "Cross-platform",
                   description: metadata.description,
                   url: "https://agents-compat.jstn.site/docs",
+                  image: "https://agents-compat.jstn.site/assets/banner.png",
                   codeRepository: "https://github.com/JustineDevs/agent-compat",
                   programmingLanguage: "TypeScript",
                   author: { "@type": "Organization", name: "Justine Devs" },

@@ -44,6 +44,14 @@ export async function generateMetadata(props: PageProps) {
       url: page.url,
       title: page.data.title,
       description: page.data.description,
+      images: [
+        {
+          url: "/assets/banner.png",
+          width: 2508,
+          height: 627,
+          alt: `${page.data.title} | Agent Compat`,
+        },
+      ],
     },
   };
 }
