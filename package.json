@@ -15,7 +15,7 @@
     "publish:github": "node scripts/publish-github-package.mjs",
     "live-smoke": "node scripts/live-smoke.mjs",
     "matrix:check": "node scripts/check-support-matrix.mjs",
-    "check": "pnpm format:check && pnpm build && pnpm typecheck && pnpm test && pnpm matrix:check && pnpm knip",
+    "check": "pnpm format:check && pnpm build && pnpm typecheck && pnpm test && pnpm matrix:check && pnpm docs:content && pnpm knip",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint": "biome lint .",
@@ -26,7 +26,8 @@
     "dev": "portless agents pnpm --filter @jstn-sdk/agents test",
     "release": "semantic-release",
     "docs:dev": "pnpm --filter agent-compat-docs dev",
-    "docs:build": "pnpm --filter agent-compat-docs build"
+    "docs:build": "pnpm --filter agent-compat-docs build",
+    "docs:content": "pnpm --filter agent-compat-docs content"
   },
   "devDependencies": {
     "@biomejs/biome": "latest",
