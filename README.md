@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/img/assets/banner.png" alt="agents" width="800"/>
+  <img src="./public/assets/banner.png" alt="agents" width="800"/>
   
 > Cross-agent environment compatibility SDK — detect, compile, validate
   
