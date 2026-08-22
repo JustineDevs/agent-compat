@@ -1,0 +1,13 @@
+{
+  "branches": ["main"],
+  "repositoryUrl": "https://github.com/JustineDevs/agent-compat.git",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/npm",
+      { "pkgRoot": "packages/agents", "npmPublish": true }
+    ],
+    "@semantic-release/github"
+  ]
+}

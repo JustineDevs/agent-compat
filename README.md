@@ -25,7 +25,7 @@
 | **Integration** | Standalone tool | Embeddable in any tool |
 | **Output** | Tool-specific files | Native files + validation report |
 | **Import** | `rulesync import` | Not included (compile-only) |
-| **Targets** | 30+ tools | 10 built-in + community adapters |
+| **Targets** | 30+ tools | Surface-level adapters + community adapters |
 
 ---
 
@@ -33,6 +33,27 @@
 
 - Node.js 18+
 - npm, pnpm, or yarn
+
+## Development Toolchain
+
+The workspace installs and verifies the project tooling explicitly:
+
+```bash
+pnpm install
+pnpm check
+```
+
+- [Nx](https://github.com/nrwl/nx) for workspace orchestration
+- [Biome](https://github.com/biomejs/biome) for formatting and linting
+- [Knip](https://github.com/webpro-nl/knip) for unused-code checks
+- [fzf](https://github.com/junegunn/fzf) for terminal workflows
+- [Changesets](https://github.com/changesets/changesets) for package versioning
+- [semantic-release](https://github.com/semantic-release/semantic-release) for automated publishing
+- [Fumadocs](https://github.com/fuma-nama/fumadocs) for documentation tooling
+- [Portless](https://github.com/vercel-labs/portless) for local development ports
+- `zod` and `@trpc/server` / `@trpc/client` for typed contracts
+
+On Ubuntu CI, `fzf` is installed with `sudo apt-get install --yes fzf`. On macOS, use `brew install fzf`.
 
 ---
 
@@ -56,7 +77,7 @@ Automatically discovers which agent environments are present in a project:
 
 ```typescript
 const detected = await Agents.detect("./my-project");
-// → [{ id: "cursor", confidence: 0.95 }, { id: "codex", confidence: 0.92 }]
+// → [{ id: "cursor", confidence: 0.95 }, { id: "codex-cli", confidence: 0.92 }]
 ```
 
 ### 2. Compile
@@ -72,10 +93,10 @@ const manifest = {
 };
 
 const result = await Agents.compile(manifest, {
-  targets: ["cursor", "codex", "pi"],
+  targets: ["cursor", "codex-cli", "pi"],
   output: "./my-project"
 });
-// → { files: [".cursor/rules/agents.mdc", "AGENTS.md", ".pi/agents.md"] }
+// → { files: [".cursor/rules/agents.mdc", "AGENTS.md", ".pi/skills/review/SKILL.md"] }
 ```
 
 ### 3. Validate
@@ -84,7 +105,7 @@ Checks generated files against official specifications:
 
 ```typescript
 const report = await Agents.validate("./my-project");
-// → { cursor: "✓", codex: "✓", pi: "◐ (partial: no hooks support)" }
+// → { cursor: "✓", "codex-cli": "✓", pi: "◐", summary: { ... } }
 ```
 
 ---
@@ -101,20 +122,19 @@ agents/
 
 ---
 
-## Built-in Adapters
+## Surface-Level Adapters
 
-| Adapter | Target | Capabilities |
+| Adapter family | Surface IDs | Support |
 |---|---|---|
-| `cursor` | Cursor IDE | rules, MCP, scoped rules |
-| `codex` | OpenAI Codex CLI | AGENTS.md, nested instructions |
-| `claude-code` | Claude Code | CLAUDE.md, skills, hooks |
-| `pi` | Pi Coding Agent | AGENTS.md, CLAUDE.md |
-| `openclaw` | OpenClaw | AGENTS.md, skills, MCP |
-| `hermes` | Hermes Agent | AGENTS.md, workspace config |
-| `copilot` | GitHub Copilot | instructions, agents |
-| `cline` | Cline / Roo Code | rules, MCP |
-| `gemini` | Gemini CLI | GEMINI.md, extensions |
-| `generic` | Any AGENTS.md reader | AGENTS.md baseline |
+| OpenAI | `codex-cli`, `codex-app`, `openai-agents`, `chatgpt-canvas` | native / experimental |
+| Anthropic | `claude-code`, `claude-cli`, `claude-desktop`, `anthropic-sdk` | native / portable / experimental |
+| Google | `gemini-cli`, `gemini-code-assist`, `antigravity`, `google-jules`, `firebase-studio` | native / experimental |
+| IDE agents | `cursor`, `windsurf`, `zed`, `continue`, `copilot`, `copilot-vscode`, `copilot-jetbrains`, `junie` | native / portable / experimental |
+| Terminal agents | `opencode`, `pi`, `openclaw`, `hermes`, `aider`, `goose`, `amp`, `warp`, `gptme`, `llm`, `fabric` | portable / experimental |
+| Editor extensions | `cline`, `roo-code`, `kilo-code`, `amazon-q`, `tabnine`, `sourcegraph-cody`, `augment-code`, `void` | native / portable / experimental |
+| Generic | `generic` | portable |
+
+Each adapter exposes `vendor`, `product`, `surface`, `support`, `verifiedVersions`, `lastVerifiedAt`, and a full capability profile. Experimental adapters intentionally compile portable output until their native format is verified from official documentation or a real installation.
 
 ---
 
@@ -123,13 +143,14 @@ agents/
 Register custom adapters:
 
 ```typescript
-import { Agents, Adapter } from "@jstn-sdk/agents";
+import { Agents } from "@jstn-sdk/agents";
 
-const myAdapter: Adapter = {
+const myAdapter = {
   id: "my-tool",
-  detect: (root) => /* ... */,
-  capabilities: { instructions: true, skills: false },
-  compile: (manifest) => /* ... */
+  description: "My tool",
+  signals: [{ type: "file", path: "MY-TOOL.md" }],
+  outputs: [{ path: "MY-TOOL.md", format: "document" }],
+  capabilities: { instructions: true, skills: false, mcp: false },
 };
 
 Agents.register(myAdapter);
@@ -151,7 +172,7 @@ A team embeds `agents` in their CI to validate that generated agent configuratio
 
 ```typescript
 const report = await Agents.validate("./");
-if (report.hasErrors()) {
+if (!report.valid) {
   process.exit(1);
 }
 ```
@@ -169,28 +190,23 @@ Contributions are welcome — especially new adapters.
 ### Adding an Adapter
 
 1. Fork the repository
-2. Create `src/adapters/<your-tool>.ts`:
+2. Add an adapter definition to `packages/agents/src/adapters/index.js`:
 
-```typescript
-import type { Adapter } from "../types";
-
-export const myToolAdapter: Adapter = {
+```js
+const myToolAdapter = {
   id: "my-tool",
-  detect: (root) => {
-    // Return DetectionResult or null
-  },
+  description: "My tool",
+  signals: [{ type: "file", path: "MY-TOOL.md" }],
+  outputs: [{ path: "MY-TOOL.md", format: "document" }],
   capabilities: {
     instructions: true,
     skills: false,
     mcp: false,
   },
-  compile: (manifest, options) => {
-    // Return GeneratedFile[]
-  },
 };
 ```
 
-3. Add conformance tests in `tests/adapters/<your-tool>.test.ts`
+3. Add conformance tests in `packages/agents/test/`
 4. Update the Built-in Adapters table in this README
 5. Open a pull request
 

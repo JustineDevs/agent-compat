@@ -1,0 +1,45 @@
+{
+  "name": "agent-compat",
+  "private": true,
+  "description": "Workspace for the @jstn-sdk/agents compatibility SDK",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "pnpm --filter @jstn-sdk/agents build",
+    "typecheck": "pnpm --filter @jstn-sdk/agents typecheck",
+    "test": "pnpm --filter @jstn-sdk/agents test",
+    "verify": "pnpm --filter @jstn-sdk/agents verify",
+    "live-smoke": "node scripts/live-smoke.mjs",
+    "matrix:check": "node scripts/check-support-matrix.mjs",
+    "check": "pnpm format:check && pnpm build && pnpm typecheck && pnpm test && pnpm matrix:check && pnpm knip",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "knip": "knip --no-config-hints",
+    "changeset": "changeset",
+    "workspace": "nx graph",
+    "docs": "fumadocs-mdx",
+    "dev": "portless agents pnpm --filter @jstn-sdk/agents test",
+    "release": "semantic-release"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "@changesets/cli": "latest",
+    "@semantic-release/commit-analyzer": "latest",
+    "@semantic-release/github": "latest",
+    "@semantic-release/npm": "latest",
+    "@semantic-release/release-notes-generator": "latest",
+    "@trpc/client": "latest",
+    "@trpc/server": "latest",
+    "fumadocs-core": "latest",
+    "fumadocs-mdx": "latest",
+    "knip": "latest",
+    "nx": "latest",
+    "portless": "latest",
+    "semantic-release": "latest",
+    "typescript": "latest",
+    "zod": "latest"
+  }
+}

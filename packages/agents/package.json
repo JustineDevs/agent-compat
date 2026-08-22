@@ -1,0 +1,37 @@
+{
+  "name": "@jstn-sdk/agents",
+  "version": "0.1.0",
+  "description": "Cross-agent environment compatibility SDK — detect, compile, validate",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./testing": {
+      "types": "./src/testing/index.d.ts",
+      "import": "./src/testing/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node --check src/index.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test",
+    "verify": "node --test test/conformance.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
