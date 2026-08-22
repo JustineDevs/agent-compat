@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { Agents } from "../packages/agents/src/index.js";
+import { Agents } from "../packages/agents/dist/index.js";
 
 const matrix = await readFile("docs/support-matrix.md", "utf8");
 const adapters = Agents.list();

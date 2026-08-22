@@ -1,6 +1,6 @@
 import { createAdapter, directory, file, portableProfile } from "./base.js";
 
-const documentOutput = (path = "AGENTS.md", maxBytes) => ({
+const documentOutput = (path = "AGENTS.md", maxBytes?: number) => ({
   path,
   format: "document",
   ...(maxBytes ? { maxBytes } : {}),

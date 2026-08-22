@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { Agents } from "../src/index.js";
+import { Agents } from "../dist/index.js";
 
 test("detect, compile, validate", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "agents-"));

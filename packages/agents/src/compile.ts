@@ -8,6 +8,7 @@ import {
 } from "./shared.js";
 import { getTargetAdapters } from "./registry.js";
 import { detect } from "./detect.js";
+import type { CompileOptions, Manifest } from "./types.js";
 
 function dedupeFiles(files) {
   const byPath = new Map();
@@ -32,7 +33,10 @@ function dedupeFiles(files) {
   };
 }
 
-export async function compile(manifest, options = {}) {
+export async function compile(
+  manifest: Manifest,
+  options: CompileOptions = {},
+) {
   const normalized = normalizeManifest(manifest);
   const root = path.resolve(options.output ?? ".");
   const requestedTargets =
@@ -65,8 +69,8 @@ export async function compile(manifest, options = {}) {
   );
   const plannedFiles = deduped.files;
 
-  const files = [];
-  const errors = [];
+  const files: any[] = [];
+  const errors: any[] = [];
   const warnings = deduped.collisions.map(
     ({ path: file, targets }) =>
       `Output collision at ${file}; selected ${targets.join(" over ")}`,

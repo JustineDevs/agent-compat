@@ -23,7 +23,7 @@
     "changeset": "changeset",
     "workspace": "nx graph",
     "docs": "fumadocs-mdx",
-    "dev": "portless agents pnpm --filter @jstn-sdk/agents test",
+    "dev": "pnpm docs:dev",
     "release": "semantic-release",
     "docs:dev": "pnpm --filter agent-compat-docs dev",
     "docs:build": "pnpm --filter agent-compat-docs build",

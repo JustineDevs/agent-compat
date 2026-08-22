@@ -1,0 +1,54 @@
+---
+title: Custom adapters
+description: Extend the registry without coupling your tool to Meta-Architect.
+---
+
+Adapters describe a concrete product surface. Registering one changes the
+current process registry only; it does not install a vendor runtime.
+
+```ts
+import { Agents } from "@jstn-sdk/agents";
+
+Agents.register({
+  id: "my-tool",
+  vendor: "my-company",
+  product: "my-tool",
+  surface: "cli",
+  support: "portable",
+  verification: { contract: "verified", runtime: "unverified" },
+  signals: [{ type: "file", path: "MY-TOOL.md" }],
+  outputs: [{ path: "MY-TOOL.md", format: "document" }],
+  capabilities: {
+    instructions: true,
+    skills: false,
+    mcp: false,
+  },
+});
+```
+
+## Adapter contract
+
+| Field | Purpose |
+| --- | --- |
+| `id` | Unique surface identifier used by `targets`. |
+| `vendor`, `product`, `surface` | Human-readable taxonomy metadata. |
+| `signals` | Repository files or directories used for detection. |
+| `outputs` | Relative files generated and validated for the surface. |
+| `skillRoot` | Optional directory for generated `SKILL.md` files. |
+| `capabilities` | Declared native or portable feature support. |
+| `support` | `native`, `portable`, or `experimental`. |
+| `verification` | Contract and runtime evidence boundary. |
+
+Every output path is resolved inside the compile root. Unsafe traversal and
+symlinked writes are rejected.
+
+## Registry helpers
+
+```ts
+Agents.list();
+Agents.get("cursor");
+Agents.reset();
+```
+
+Use `reset()` in isolated tests when you need to restore the built-in registry
+before registering test adapters.

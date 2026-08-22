@@ -11,6 +11,10 @@ Returns detected adapter surfaces ordered by confidence.
 const environments = await Agents.detect('./project');
 ```
 
+When no environment signal is found, detection returns the portable `generic`
+adapter with low confidence. Detection is repository-based and does not require
+vendor binaries.
+
 ## `Agents.compile(manifest, options)`
 
 Compiles the canonical manifest for selected adapter IDs and writes native or portable artifacts.
@@ -23,7 +27,10 @@ const result = await Agents.compile(manifest, {
 });
 ```
 
-The result includes generated files, warnings, and target-specific errors.
+With no `targets`, the SDK compiles for adapters detected under `output`.
+`dryRun: true` returns the planned files without writing. The result includes
+`targets`, generated files, `created`, `updated`, `skipped`, warnings, and
+target-specific errors.
 
 ## `Agents.validate(root)`
 
@@ -34,6 +41,9 @@ const report = await Agents.validate('./project');
 if (!report.valid) throw new Error('Agent artifacts need attention');
 ```
 
+Pass `{ targets: ['cursor'] }` to validate only selected adapters. Without
+targets, validation uses detected adapters.
+
 ## Adapter registry
 
 Register a custom adapter without importing Meta-Architect:
@@ -42,3 +52,6 @@ Register a custom adapter without importing Meta-Architect:
 Agents.register(myAdapter);
 const adapters = Agents.list();
 ```
+
+Use `Agents.get(id)` to inspect one adapter and `Agents.reset()` to restore the
+built-in registry in a test process.

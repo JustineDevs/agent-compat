@@ -17,31 +17,34 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.d.ts",
-      "import": "./src/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./testing": {
-      "types": "./src/testing/index.d.ts",
-      "import": "./src/testing/index.js"
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js"
     },
     "./package.json": "./package.json"
   },
   "files": [
-    "src",
+    "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "node --check src/index.js",
+    "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "node --test",
-    "verify": "node --test test/conformance.test.js"
+    "test": "pnpm build && node --test",
+    "verify": "pnpm build && node --test test/conformance.test.js"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0"
   }
 }

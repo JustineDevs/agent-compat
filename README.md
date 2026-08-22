@@ -206,7 +206,7 @@ Contributions are welcome — especially new adapters.
 ### Adding an Adapter
 
 1. Fork the repository
-2. Add an adapter definition to `packages/agents/src/adapters/index.js`:
+2. Add an adapter definition to `packages/agents/src/adapters/index.ts`:
 
 ```js
 const myToolAdapter = {
