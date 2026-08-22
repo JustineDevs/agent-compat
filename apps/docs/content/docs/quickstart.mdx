@@ -1,0 +1,46 @@
+---
+title: Quickstart
+description: Compile one canonical manifest into native project artifacts.
+---
+
+## 1. Define a manifest
+
+```ts
+import type { Manifest } from '@jstn-sdk/agents';
+
+const manifest: Manifest = {
+  version: 1,
+  project: { name: 'my-app', stack: ['typescript'] },
+  instructions: ['Run tests and type checks before completion'],
+  skills: {
+    architecture-review: {
+      description: 'Review architecture boundaries',
+      instructions: ['Check dependency direction'],
+      triggers: ['architecture', 'refactor'],
+    },
+  },
+};
+```
+
+## 2. Detect environments
+
+```ts
+import { Agents } from '@jstn-sdk/agents';
+
+const detected = await Agents.detect('./my-project');
+```
+
+Detection uses repository files and directories. It does not require vendor binaries to be installed.
+
+## 3. Compile and validate
+
+```ts
+const result = await Agents.compile(manifest, {
+  targets: detected.map((item) => item.id),
+  output: './my-project',
+});
+
+const report = await Agents.validate('./my-project');
+```
+
+Use `dryRun: true` to preview writes. Managed blocks are updated without replacing unrelated user content.

@@ -1,0 +1,5 @@
+{
+  "title": "Agent Compat",
+  "description": "Cross-agent environment compatibility SDK",
+  "root": true
+}

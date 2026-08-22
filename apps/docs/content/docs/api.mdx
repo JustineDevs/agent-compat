@@ -1,0 +1,44 @@
+---
+title: API
+description: The stable public API of @jstn-sdk/agents.
+---
+
+## `Agents.detect(root)`
+
+Returns detected adapter surfaces ordered by confidence.
+
+```ts
+const environments = await Agents.detect('./project');
+```
+
+## `Agents.compile(manifest, options)`
+
+Compiles the canonical manifest for selected adapter IDs and writes native or portable artifacts.
+
+```ts
+const result = await Agents.compile(manifest, {
+  targets: ['cursor', 'codex-cli', 'claude-code'],
+  output: './project',
+  dryRun: true,
+});
+```
+
+The result includes generated files, warnings, and target-specific errors.
+
+## `Agents.validate(root)`
+
+Reads actual generated files and returns per-adapter status, score, issues, and capabilities.
+
+```ts
+const report = await Agents.validate('./project');
+if (!report.valid) throw new Error('Agent artifacts need attention');
+```
+
+## Adapter registry
+
+Register a custom adapter without importing Meta-Architect:
+
+```ts
+Agents.register(myAdapter);
+const adapters = Agents.list();
+```

@@ -1,0 +1,20 @@
+---
+title: Support matrix
+description: Registered adapter surfaces and their verified support boundaries.
+---
+
+The release registry currently contains **41 adapter surfaces across 26 vendor labels**. Each adapter has a concrete detection contract, compilation path, validation result, and support level.
+
+| Support level | Meaning |
+| --- | --- |
+| `native` | Generates the target's documented native artifacts. |
+| `portable` | Generates the portable baseline understood by the target. |
+| `experimental` | Reserved for adapters not yet verified. |
+
+The repository keeps the complete machine-checked matrix in [`docs/support-matrix.md`](https://github.com/JustineDevs/agent-compat/blob/main/docs/support-matrix.md). The conformance suite currently verifies every registered adapter.
+
+## Release evidence
+
+- [npm package](https://www.npmjs.com/package/@jstn-sdk/agents)
+- [v0.1.0 release](https://github.com/JustineDevs/agent-compat/releases/tag/v0.1.0)
+- [source repository](https://github.com/JustineDevs/agent-compat)

@@ -233,7 +233,7 @@ pnpm test
 
 ## Links
 
-- [Documentation](https://agents.jstn.site)
+- [Documentation](https://agents-compat.jstn.site)
 - [npm](https://www.npmjs.com/package/@jstn-sdk/agents)
 - [Issues](https://github.com/JustineDevs/agent-compat/issues)
 - [Changelog](./CHANGELOG.md)

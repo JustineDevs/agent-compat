@@ -23,7 +23,9 @@
     "workspace": "nx graph",
     "docs": "fumadocs-mdx",
     "dev": "portless agents pnpm --filter @jstn-sdk/agents test",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "docs:dev": "pnpm --filter agent-compat-docs dev",
+    "docs:build": "pnpm --filter agent-compat-docs build"
   },
   "devDependencies": {
     "@biomejs/biome": "latest",
@@ -41,6 +43,11 @@
     "portless": "latest",
     "semantic-release": "latest",
     "typescript": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "zod": "latest"
   }
 }

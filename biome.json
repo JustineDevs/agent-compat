@@ -6,7 +6,10 @@
       "!**/.omx",
       "!**/node_modules",
       "!**/dist",
-      "!**/coverage"
+      "!**/coverage",
+      "!**/.next",
+      "!**/.source",
+      "!**/tsconfig.tsbuildinfo"
     ]
   },
   "formatter": {
