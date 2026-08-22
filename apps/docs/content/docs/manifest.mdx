@@ -46,7 +46,7 @@ const manifest: Manifest = {
 | `skills` | no | Named reusable skills and their instructions. |
 | `workflows` | no | Workflow metadata preserved in generated documents. |
 | `roles` | no | Role metadata preserved in generated documents. |
-| `targets` | no | Application-level target metadata. Explicit compile options take precedence. |
+| `targets` | no | Application-level target metadata preserved in generated documents. It does not select compile targets. |
 
 Empty optional collections are normalized safely. Skill names must be safe
 directory names because adapters may write them below a target skill root.
