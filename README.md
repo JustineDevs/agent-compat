@@ -63,6 +63,13 @@ On Ubuntu CI, `fzf` is installed with `sudo apt-get install --yes fzf`. On macOS
 npm install @jstn-sdk/agents
 ```
 
+GitHub Packages users can install the owner-scoped mirror after authenticating
+to `npm.pkg.github.com`:
+
+```bash
+npm install @JustineDevs/agents --registry=https://npm.pkg.github.com
+```
+
 Publish the public SDK package from the workspace root with:
 
 ```bash

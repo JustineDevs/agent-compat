@@ -12,6 +12,7 @@
     "test": "pnpm --filter @jstn-sdk/agents test",
     "verify": "pnpm --filter @jstn-sdk/agents verify",
     "publish:agents": "pnpm --filter @jstn-sdk/agents publish --access public",
+    "publish:github": "node scripts/publish-github-package.mjs",
     "live-smoke": "node scripts/live-smoke.mjs",
     "matrix:check": "node scripts/check-support-matrix.mjs",
     "check": "pnpm format:check && pnpm build && pnpm typecheck && pnpm test && pnpm matrix:check && pnpm knip",
